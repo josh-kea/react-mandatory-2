@@ -1,4 +1,5 @@
 require('dotenv').config()
+const cors = require('cors');
 
 const express = require('express')
 const app = express()
@@ -16,7 +17,8 @@ app.use("/users", rateLimiter({
 }))
 
 app.use(express.json())
-
+// middlewares - implement cors
+app.use(cors());
 
 // User creating users database
 const users = []

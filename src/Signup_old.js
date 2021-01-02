@@ -21,21 +21,13 @@ export default class Signup extends React.Component {
         const { username, password } = this.state
         
 
-        fetch('http://localhost:4000/users', {
+        fetch('http://localhost:4000/users'), {
             method:'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+            body: {
                 name: username,
                 password: password
-            })
-        })
-        .then(res => {
-            return res.json()
-        })
-        .then(data => console.log(data))
-        .catch(error => console.log('ERROR'))
+            }
+        }.then()
 
 
         event.preventDefault();
