@@ -31,8 +31,8 @@ export default class Signup extends React.Component {
                 password: password
             })
         })
-        .then(res => {
-            return res.json()
+        .then(response => {
+            return response
         })
         .then(data => console.log(data))
         .catch(error => console.log('ERROR'))
