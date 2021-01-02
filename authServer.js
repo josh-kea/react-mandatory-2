@@ -4,8 +4,16 @@ const express = require('express')
 const app = express()
 const jwt = require('jsonwebtoken')
 const { restart } = require('nodemon')
-const bcrypt = require('bcrypt')
 
+// Bcrypt for password hashing and dehashing
+const bcrypt = require('bcrypt')
+// Rate limiting
+const rateLimiter = require("express-rate-limit");
+
+app.use("/users", rateLimiter({
+    windowMs: 15 * 60 * 1000, // 15 mins
+    max: 15 // limit each IP to 100 request per windowMs
+}))
 
 app.use(express.json())
 
@@ -80,7 +88,7 @@ app.post('/users/login', async (req, res) => {
         console.log('Login success, found: ' + user.name)
         
         res.send('Success')
-        
+
       } else {
         res.send('Not Allowed')
       }
