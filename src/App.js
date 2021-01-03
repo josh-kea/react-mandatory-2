@@ -40,7 +40,18 @@ const  App = (props) => {
               alert('User Not Found! Create a user first to log in.')
             }
             return response.json()
-        }).then(data => console.log(data.accessToken))
+        }).then(data => {
+          console.log(data)
+          // authenticate user and store token and user name in session storage
+          // authenticate(data)
+          
+          // console.log(data.accessToken)
+          // console.log(data.username)
+
+          sessionStorage.setItem('token', JSON.stringify(data.accessToken))
+          sessionStorage.setItem('user', JSON.stringify(data.username))
+          JSON.parse(sessionStorage.getItem('token'))
+        })
         .catch(error => console.log(error))
     }
 

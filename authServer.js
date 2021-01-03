@@ -92,12 +92,9 @@ app.post('/users/login', async (req, res) => {
         res.status(200).json({
           message: 'User logged in!',
           accessToken: accessToken,
-          refreshToken: refreshToken
+          refreshToken: refreshToken,
+          username: user.name
         })
-
-        sessionStorage.setItem('token', JSON.stringify(accessToken))
-        sessionStorage.setItem('user', JSON.stringify(user.name))
-
 
       } else {
         res.status(400).json({
