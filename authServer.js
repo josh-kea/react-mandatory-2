@@ -95,6 +95,10 @@ app.post('/users/login', async (req, res) => {
           refreshToken: refreshToken
         })
 
+        sessionStorage.setItem('token', JSON.stringify(accessToken))
+        sessionStorage.setItem('user', JSON.stringify(user.name))
+
+
       } else {
         res.status(400).json({
           error: 'Password incorrect!'
@@ -107,7 +111,7 @@ app.post('/users/login', async (req, res) => {
   })
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
 }
 
 app.listen(4000)

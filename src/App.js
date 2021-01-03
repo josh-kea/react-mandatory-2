@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import {authenticate, getUser } from './helpers.js';
 
 const  App = (props) => {
 
@@ -34,12 +35,12 @@ const  App = (props) => {
         .then(response => {
             if (response.ok) {
               alert('User logged in successfully.')
+              // authenticate(response)
             } else {
               alert('User Not Found! Create a user first to log in.')
             }
-            return response
-        })
-        .then(data => console.log(data))
+            return response.json()
+        }).then(data => console.log(data.accessToken))
         .catch(error => console.log(error))
     }
 
