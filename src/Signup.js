@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-export default class Signup extends React.Component {
+class Signup extends React.Component {
     state = {
         username: "",
         password: ""
@@ -40,6 +41,9 @@ export default class Signup extends React.Component {
 
         event.preventDefault();
 
+        // Once useris created, user is taken back to login page
+        this.props.history.push("/");
+
 
     }
 
@@ -50,12 +54,17 @@ export default class Signup extends React.Component {
 
     render() {
         return (
+            <div className="container">
             <form onSubmit={this.handleFormCreateUser} >
                 <div>Sign Up</div>
                 <input type="text" id="username" placeholder="Username" onChange={this.handleInputChanged} />
                 <input type="password" id="password" placeholder="Password"  onChange={this.handleInputChanged} />
                 <button type="submit">Submit</button>
             </form>
+            <Link to="/">Already have an account? Sign in.</Link>
+            </div>
         );
     }
 }
+
+export default withRouter(Signup);

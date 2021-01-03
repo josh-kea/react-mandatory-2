@@ -78,6 +78,7 @@ app.post('/users/login', async (req, res) => {
     const user = users.find(user => user.name === req.body.name)
     if (user == null) {
       return res.status(400).send('Cannot find user')
+      //return res.send('User not found!')
     }
     try {
       if(await bcrypt.compare(req.body.password, user.password)) {
@@ -86,16 +87,22 @@ app.post('/users/login', async (req, res) => {
         const accessToken = generateAccessToken(user)
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
         refreshTokens.push(refreshToken)
-        res.json({ accessToken: accessToken, refreshToken: refreshToken })
-        console.log('Login success, found: ' + user.name)
+        // res.json({ accessToken: accessToken, refreshToken: refreshToken })
         
-        res.send('Success')
+        res.status(200).json({
+          message: 'User logged in!',
+          accessToken: accessToken,
+          refreshToken: refreshToken
+        })
 
       } else {
-        res.send('Not Allowed')
+        res.status(400).json({
+          error: 'Password incorrect!'
+        })
       }
     } catch {
-      res.status(500).send()
+      // Generic catch-all response
+      res.status(500).send('Lol')
     }
   })
 

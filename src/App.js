@@ -1,7 +1,8 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-function App() {
+const  App = (props) => {
 
   const [state, setState] = useState( {
     username: '',
@@ -18,13 +19,33 @@ function App() {
 };
 
     const handleSubmit = event => {
-      event.preventDefault();
-      console.table({ username, password })
+      event.preventDefault();        
 
+        fetch('http://localhost:4000/users/login', {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: username,
+                password: password
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+              alert('User logged in successfully.')
+            } else {
+              alert('User Not Found! Create a user first to log in.')
+            }
+            return response
+        })
+        .then(data => console.log(data))
+        .catch(error => console.log(error))
     }
 
   return (
-    <div className="App">
+    <div className="container">
+        <div>Log In</div>
         <form onSubmit={handleSubmit}>
           <label>Username</label>
           <input type="text" value={username} name="username" onChange={handleChange('username')}></input>
@@ -35,8 +56,9 @@ function App() {
           <button>Sign In</button>
 
         </form>
+        <Link to="/signup">Don't have an account yet? Signup.</Link>
     </div>
   );
 }
 
-export default App;
+export default withRouter(App);
