@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {authenticate, getUser } from './helpers.js';
+import {authenticate, logout, getUser } from './helpers.js';
 
 const  App = (props) => {
 
@@ -44,31 +44,42 @@ const  App = (props) => {
           console.log(data)
           // authenticate user and store token and user name in session storage
           // authenticate(data)
-          
+
           // console.log(data.accessToken)
           // console.log(data.username)
 
           sessionStorage.setItem('token', JSON.stringify(data.accessToken))
           sessionStorage.setItem('user', JSON.stringify(data.username))
-          JSON.parse(sessionStorage.getItem('token'))
+          // JSON.parse(sessionStorage.getItem('token'))
+          props.history.push('/')
         })
         .catch(error => console.log(error))
     }
 
   return (
+    
     <div className="container">
-        <div>Log In</div>
-        <form onSubmit={handleSubmit}>
-          <label>Username</label>
-          <input type="text" value={username} name="username" onChange={handleChange('username')}></input>
+      { !getUser() && (
+        <div>        
+          <div>Log In</div>
+          <form onSubmit={handleSubmit}>
+            <label>Username</label>
+            <input type="text" value={username} name="username" onChange={handleChange('username')}></input>
 
-          <label>Password</label>
-          <input type="password" value={password} onChange={handleChange('password')} name="password"></input>
+            <label>Password</label>
+            <input type="password" value={password} onChange={handleChange('password')} name="password"></input>
 
-          <button>Sign In</button>
+            <button>Sign In</button>
 
-        </form>
-        <Link to="/signup">Don't have an account yet? Signup.</Link>
+          </form>
+          <Link to="/signup">Don't have an account yet? Signup.</Link>
+        </div>
+      )}
+
+      { getUser() && (
+        <div>Hello <span style={{color:"red"}}>{getUser()}</span>! You are logged in already. <span onClick={() => logout(() => props.history.push('/'))}> Logout</span></div>
+      )}
+
     </div>
   );
 }
